@@ -45,7 +45,7 @@ public class GUIController {
 	}
 	
 	public boolean cellClicked(TicCell cell) {
-		return board.attemptMove(State.X, cell.getCol(), cell.getRow()); // TODO: Fix player argument to reflect possessor of current move.
+		return board.attemptMove(board.getTurnPlayer(), cell.getCol(), cell.getRow()); // TODO: Fix player argument to reflect possessor of current move.
 	}
 	
 }

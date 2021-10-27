@@ -4,10 +4,11 @@ public class Board {
 	private static final int size = 3;
 	
 	private State[][] field;
+	private static State turn;
+	private int xWins = 0, oWins = 0, ties = 0;
 	
 	public Board() {
-		field = new State[size][size];
-		clear();
+		newGame();
 	}
 	
 	public boolean attemptMove(State player, int x, int y) {
@@ -17,9 +18,41 @@ public class Board {
 			return false;
 		} else {
 			field[x][y] = player;
+			moveExecuted(); // TODO: Make sure move is visible on GUI even if it wins the game!
 			return true;
 		}
 	}
+	
+	public State getTurnPlayer() { // Returns the player that will make next move!
+		return turn;
+	}
+	
+	private void moveExecuted() {
+		Pair<State, Boolean> status = gameStatus();
+		boolean gameComplete = status.snd;
+		State winner = status.fst;
+		if (gameComplete) {
+			turn = State.X;
+			newGame();
+			switch (winner) {
+			case X:
+				xWins++;
+				break;
+			case O:
+				oWins++;
+				break;
+			case EMPTY:
+			default:
+				ties++;
+				break;
+			}
+			System.out.println("Win totals:\n X: " + xWins + "\n O: " + oWins + "\n Ties:" + ties); // TODO: Add GUI for win totals.
+			System.out.println("\nNew game!\n");
+		} else {
+			newTurn();
+		}
+	}
+	
 
 	public Pair<State, Boolean> gameStatus() { // return type <gameComplete, winner>
 		final State[] players = {State.X, State.O};
@@ -41,12 +74,15 @@ public class Board {
 		return new Pair<State, Boolean>(State.EMPTY, true); // Winner hasn't been found, board is full, game is complete.
 	}
 	
-	public void clear() { // Fills field with EMPTY state.
+	public void newGame() { // Fills field with EMPTY state.
+		field = new State[size][size];
+		turn = State.X;
 		for (int y=0;y<size;y++) {
 			for (int x=0;x<size;x++) {
 				field[x][y] = State.EMPTY;
 			}
 		}
+		// TODO: Solution to refresh GUI on board clear?
 	}
 	
 	enum XCoord {
@@ -107,5 +143,12 @@ public class Board {
 	}
 	public State getState(int x, int y) {
 		return field[x][y];
+	}
+	public static void newTurn() {
+		if (turn == State.X) {
+			turn = State.O;
+		} else {
+			turn = State.X;
+		}
 	}
 }
