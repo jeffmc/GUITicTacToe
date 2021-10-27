@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import mcmillan.jeff.tictactoe.State;
+
 public class GUI {
 	
 	private JPanel boardPanel;
@@ -22,7 +24,7 @@ public class GUI {
 		
 		for (int y=0;y<3;y++) {
 			for (int x=0;x<3;x++) {
-				boardPanel.add(new TicButton(x,y), y*3+x);
+				boardPanel.add(new TicCell(x,y, State.EMPTY), y*3+x);
 			}
 		}
 		

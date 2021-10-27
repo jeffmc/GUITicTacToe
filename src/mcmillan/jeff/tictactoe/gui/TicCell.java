@@ -8,12 +8,12 @@ import javax.swing.JLabel;
 import mcmillan.jeff.tictactoe.State;
 
 @SuppressWarnings("serial")
-public class TicButton extends JButton {
+public class TicCell extends JButton {
 	
 	public static final Font defaultFont = new JLabel().getFont().deriveFont(48f).deriveFont(Font.BOLD);
 	
 	private State state;
-	public TicButton(int x, int y, State s) {
+	public TicCell(int x, int y, State s) {
 		super(x + ", " + y);
 		this.setFont(defaultFont);
 		state = s;
