@@ -10,10 +10,9 @@ public class Board {
 		clear();
 	}
 	
-	public boolean attemptMove(State player, char col, char row) {
+	public boolean attemptMove(State player, int x, int y) {
 		if (player != State.X && player != State.O) throw new IllegalArgumentException("Invalid Player!");
-		int x = XCoord.getFromChar(col).getIndex();
-		int y = YCoord.getFromChar(row).getIndex();
+		if (x >= size || y >= size || x < 0 || y < 0) throw new IllegalArgumentException(x + ", " + y + " out of field bounds!");
 		if (field[x][y] != State.EMPTY) {
 			return false;
 		} else {
@@ -105,5 +104,8 @@ public class Board {
 				throw new IllegalArgumentException("'" + c + "' is not a valid YCoord!");
 			}
 		}
+	}
+	public State getState(int x, int y) {
+		return field[x][y];
 	}
 }

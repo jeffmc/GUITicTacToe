@@ -6,18 +6,17 @@ public class Main {
 
 	private static Input input;
 	private static Board board;
-	private static GUI gui;
+	private static GUIController gui;
 	
 	private static final char[] cols = {'a', 'b', 'c'};
 	private static final char[] rows = {'1', '2', '3'};
 	private static State turn;
 	
 	public static void main(String[] args) {
-		
-		gui = new GUI();
-		input = new Input();
+
 		board = new Board();
-		
+		gui = new GUIController(board);
+		input = new Input();
 		return;
 //		
 //		
