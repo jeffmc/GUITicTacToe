@@ -1,6 +1,7 @@
-package mcmillan.jeff.tictactoe;
+package mcmillan.jeff.tictactoe.gui;
 
-import mcmillan.jeff.tictactoe.gui.TicController;
+import mcmillan.jeff.tictactoe.Pair;
+import mcmillan.jeff.tictactoe.State;
 
 public class TicModel {
 	
@@ -11,7 +12,7 @@ public class TicModel {
 	private static State turn;
 	private int xWins = 0, oWins = 0, ties = 0;
 	
-	public void setController(TicController ctrl) {
+	public TicModel(TicController ctrl) {
 		controller = ctrl;
 	}
 	
@@ -42,7 +43,6 @@ public class TicModel {
 		boolean gameComplete = status.snd;
 		State winner = status.fst;
 		if (gameComplete) {
-			turn = State.X;
 			newGame();
 			switch (winner) {
 			case X:
@@ -56,8 +56,7 @@ public class TicModel {
 				ties++;
 				break;
 			}
-			System.out.println("Win totals:\n X: " + xWins + "\n O: " + oWins + "\n Ties:" + ties);
-			System.out.println("\nNew game!\n");
+			controller.refreshTotals();
 		} else {
 			newTurn();
 		}
@@ -107,5 +106,16 @@ public class TicModel {
 		} else {
 			turn = State.X;
 		}
+	}
+	public int getXWins() {
+		return xWins;
+	}
+
+	public int getOWins() {
+		return oWins;
+	}
+
+	public int getTies() {
+		return ties;
 	}
 }

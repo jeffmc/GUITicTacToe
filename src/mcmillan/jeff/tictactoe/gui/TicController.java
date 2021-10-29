@@ -1,22 +1,15 @@
 package mcmillan.jeff.tictactoe.gui;
 
 import mcmillan.jeff.tictactoe.State;
-import mcmillan.jeff.tictactoe.TicModel;
 
 public class TicController {
 	
 	private TicModel model;
 	private TicView view;
-	
-	public TicController(TicModel m, TicView v) {
-		model = m;
-		model.setController(this);
-		view = v;
-		view.setController(this);
-	}
 
 	public TicController() {
-		this(new TicModel(), new TicView());
+		model = new TicModel(this);
+		view = new TicView(this);
 	}
 	
 	public State getState(int x, int y) {
@@ -34,5 +27,21 @@ public class TicController {
 
 	public void refreshCell(int x, int y) {
 		view.refreshCell(x,y);
+	}
+
+	public int getXWins() {
+		return model.getXWins();
+	}
+
+	public int getOWins() {
+		return model.getOWins();
+	}
+
+	public int getTies() {
+		return model.getTies();
+	}
+
+	public void refreshTotals() {
+		view.refreshTotals();
 	}
 }

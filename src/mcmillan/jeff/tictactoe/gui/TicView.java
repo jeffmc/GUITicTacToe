@@ -2,6 +2,7 @@ package mcmillan.jeff.tictactoe.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JFrame;
@@ -12,21 +13,24 @@ import mcmillan.jeff.tictactoe.State;
 public class TicView {
 
 	private TicController controller;
+
+	private JFrame frame;
 	
 	private JPanel boardPanel;
-	private JFrame frame;
 	private TicCell[][] cells;
 	
+	private JPanel winPanel;
+	private TicResultLabel xLabel, oLabel, tieLabel; 
 	
-	public TicView() {
+	public TicView(TicController ctrl) {
+		controller = ctrl;
 		cells = new TicCell[3][3];
 		
 		frame = new JFrame("TicTacToe");
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		// TODO: Add GUI for win totals.
-		// TODO: Add GUI for changing player names.
+		// TODO: Add GUI for changing player names and showing current turn.
 		
 		boardPanel = new JPanel(new GridLayout(3, 3));
 		boardPanel.setPreferredSize(new Dimension(500, 500));
@@ -41,12 +45,18 @@ public class TicView {
 		
 		frame.getContentPane().add(boardPanel, BorderLayout.PAGE_START);
 		
+		winPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		xLabel = new TicResultLabel(State.X, this);
+		oLabel = new TicResultLabel("Ties", this);
+		tieLabel = new TicResultLabel(State.O, this);
+		winPanel.add(xLabel);
+		winPanel.add(oLabel);
+		winPanel.add(tieLabel);
+		
+		frame.getContentPane().add(winPanel, BorderLayout.PAGE_END);
+		
 		frame.pack();
 		frame.setVisible(true);
-	}
-	
-	public void setController(TicController ctrl) {
-		controller = ctrl;
 	}
 	
 	public boolean cellClicked(TicCell cell) {
@@ -59,6 +69,28 @@ public class TicView {
 
 	public void refreshCell(int x, int y) {
 		cells[x][y].setState(controller.getState(x, y));
+	}
+
+	public String getPlayerName(State s) {
+		return s.getWinner(); // TODO: Add player naming.
+	}
+
+	public int getXWins() {
+		return controller.getXWins();
+	}
+
+	public int getOWins() {
+		return controller.getOWins();
+	}
+
+	public int getTies() {
+		return controller.getTies();
+	}
+
+	public void refreshTotals() {
+		xLabel.refreshLabel();
+		oLabel.refreshLabel();
+		tieLabel.refreshLabel();
 	}
 	
 }
