@@ -2,16 +2,16 @@ package mcmillan.jeff.tictactoe.gui;
 
 import mcmillan.jeff.tictactoe.*;
 
-public class Main {
+// Jeff McMillan
+// October 29th, 2021
+// An implementation of the TicTacToe game with a graphical user interface.
 
-	private static Board board;
-	@SuppressWarnings("unused")
-	private static GUIController gui;
+public class Main {
+	
+	public static TicController ctrl = new TicController();
 	
 	public static void main(String[] args) {
-
-		board = new Board();
-		gui = new GUIController(board);
-		return;
+		ctrl = new TicController();
+		ctrl.start();
 	}
 }

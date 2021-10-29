@@ -7,18 +7,20 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import mcmillan.jeff.tictactoe.Board;
 import mcmillan.jeff.tictactoe.State;
 
-public class GUIController {
+public class TicView {
+
+	private TicController controller;
 	
 	private JPanel boardPanel;
 	private JFrame frame;
+	private TicCell[][] cells;
 	
-	private Board board;
 	
-	public GUIController(Board b) {
-		board = b;
+	public TicView() {
+		System.out.println("Inited");
+		cells = new TicCell[3][3];
 		
 		frame = new JFrame("TicTacToe");
 		frame.setResizable(false);
@@ -29,23 +31,28 @@ public class GUIController {
 		
 		for (int y=0;y<3;y++) {
 			for (int x=0;x<3;x++) {
-				boardPanel.add(new TicCell(State.EMPTY,x,y,this), y*3+x);
+				TicCell cell = new TicCell(State.EMPTY,x,y,this);
+				cells[x][y] = cell;
+				boardPanel.add(cell, y*3+x);
 			}
 		}
 		
 		frame.getContentPane().add(boardPanel, BorderLayout.PAGE_START);
-
-		//4. Size the frame.
+		
 		frame.pack();
 		frame.setVisible(true);
 	}
 	
-	public State getState(int x, int y) {
-		return board.getState(x,y);
+	public void setController(TicController ctrl) {
+		controller = ctrl;
 	}
 	
 	public boolean cellClicked(TicCell cell) {
-		return board.attemptMove(board.getTurnPlayer(), cell.getCol(), cell.getRow()); // TODO: Fix player argument to reflect possessor of current move.
+		return controller.attemptMove(cell.getCol(), cell.getRow());
+	}
+	
+	public State getState(int x, int y) {
+		return controller.getState(x, y);
 	}
 	
 }

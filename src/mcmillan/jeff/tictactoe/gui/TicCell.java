@@ -27,23 +27,19 @@ public class TicCell extends JButton {
 	
 	private State state;
 	private int col, row;
-	private GUIController controller;
-	public TicCell(State s, int c, int r, GUIController ctrl) {
+	private TicView view;
+	public TicCell(State s, int c, int r, TicView v) {
 		super(getCharFromState(s)+"");
 		this.setFont(defaultFont);
 		this.addActionListener(onClick);
 		state = s;
 		col = c;
 		row = r;
-		controller = ctrl;
+		view = v;
 	}
 	
 	public void clicked() {
-		if (controller.cellClicked(this)) {
-			this.setState(controller.getState(col,row));
-		} else {
-			System.err.println("CANT CLICK ALREADY FILLED CELL!"); // TODO: Make visible error warning in GUI.
-		}
+		view.cellClicked(this);
 	}
 	
 	public State getState() {

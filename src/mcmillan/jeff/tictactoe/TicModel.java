@@ -1,15 +1,24 @@
 package mcmillan.jeff.tictactoe;
-public class Board {
+
+import mcmillan.jeff.tictactoe.gui.TicController;
+
+public class TicModel {
 	
 	private static final int size = 3;
 	
+	private TicController controller;
 	private State[][] field;
 	private static State turn;
 	private int xWins = 0, oWins = 0, ties = 0;
 	
-	public Board() {
+	public void setController(TicController ctrl) {
+		controller = ctrl;
+	}
+	
+	public void start() {
 		newGame();
 	}
+	
 	
 	public boolean attemptMove(State player, int x, int y) {
 		if (player != State.X && player != State.O) throw new IllegalArgumentException("Invalid Player!");
@@ -17,7 +26,7 @@ public class Board {
 		if (field[x][y] != State.EMPTY) {
 			return false;
 		} else {
-			field[x][y] = player;
+			setState(player, x, y);
 			moveExecuted(); // TODO: Make sure move is visible on GUI even if it wins the game!
 			return true;
 		}
@@ -84,65 +93,12 @@ public class Board {
 		}
 		// TODO: Solution to refresh GUI on board clear?
 	}
-	
-	enum XCoord {
-		A("A",0),B("B",1),C("C",2);
-		
-		XCoord(String n, int i) {
-			name = n;
-			idx = i;
-		}
-		private int idx;
-		private String name;
-		public int getIndex() {
-			return idx;
-		}
-		public String getName() {
-			return name;
-		}
-		public static XCoord getFromChar(char c) {
-			switch (c) {
-			case 'a':
-				return A;
-			case 'b':
-				return B;
-			case 'c':
-				return C;
-			default:
-				throw new IllegalArgumentException("'" + c + "' is not a valid XCoord!");
-			}
-		}
-	}
-	enum YCoord {
-		One("1",0),Two("2",1),Three("3",2);
-		
-		YCoord(String n, int i) {
-			name = n;
-			idx = i;
-		}
-		private int idx;
-		private String name;
-		public int getIndex() {
-			return idx;
-		}
-		public String getName() {
-			return name;
-		}
-		public static YCoord getFromChar(char c) {
-			switch (c) {
-			case '1':
-				return One;
-			case '2':
-				return Two;
-			case '3':
-				return Three;
-			default:
-				throw new IllegalArgumentException("'" + c + "' is not a valid YCoord!");
-			}
-		}
-	}
 	public State getState(int x, int y) {
 		return field[x][y];
+	}
+
+	public void setState(State s, int x, int y) {
+		field[x][y] = s;
 	}
 	public static void newTurn() {
 		if (turn == State.X) {
