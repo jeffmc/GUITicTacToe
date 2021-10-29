@@ -19,13 +19,15 @@ public class TicView {
 	
 	
 	public TicView() {
-		System.out.println("Inited");
 		cells = new TicCell[3][3];
 		
 		frame = new JFrame("TicTacToe");
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		// TODO: Add GUI for win totals.
+		// TODO: Add GUI for changing player names.
+		
 		boardPanel = new JPanel(new GridLayout(3, 3));
 		boardPanel.setPreferredSize(new Dimension(500, 500));
 		
@@ -53,6 +55,10 @@ public class TicView {
 	
 	public State getState(int x, int y) {
 		return controller.getState(x, y);
+	}
+
+	public void refreshCell(int x, int y) {
+		cells[x][y].setState(controller.getState(x, y));
 	}
 	
 }

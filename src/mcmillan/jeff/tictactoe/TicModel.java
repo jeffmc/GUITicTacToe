@@ -16,6 +16,7 @@ public class TicModel {
 	}
 	
 	public void start() {
+		turn = State.X;
 		newGame();
 	}
 	
@@ -27,7 +28,7 @@ public class TicModel {
 			return false;
 		} else {
 			setState(player, x, y);
-			moveExecuted(); // TODO: Make sure move is visible on GUI even if it wins the game!
+			moveExecuted();
 			return true;
 		}
 	}
@@ -55,7 +56,7 @@ public class TicModel {
 				ties++;
 				break;
 			}
-			System.out.println("Win totals:\n X: " + xWins + "\n O: " + oWins + "\n Ties:" + ties); // TODO: Add GUI for win totals.
+			System.out.println("Win totals:\n X: " + xWins + "\n O: " + oWins + "\n Ties:" + ties);
 			System.out.println("\nNew game!\n");
 		} else {
 			newTurn();
@@ -88,10 +89,9 @@ public class TicModel {
 		turn = State.X;
 		for (int y=0;y<size;y++) {
 			for (int x=0;x<size;x++) {
-				field[x][y] = State.EMPTY;
+				setState(State.EMPTY, x, y);
 			}
 		}
-		// TODO: Solution to refresh GUI on board clear?
 	}
 	public State getState(int x, int y) {
 		return field[x][y];
@@ -99,6 +99,7 @@ public class TicModel {
 
 	public void setState(State s, int x, int y) {
 		field[x][y] = s;
+		controller.refreshCell(x,y);
 	}
 	public static void newTurn() {
 		if (turn == State.X) {

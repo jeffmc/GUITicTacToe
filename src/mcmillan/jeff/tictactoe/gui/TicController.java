@@ -16,7 +16,7 @@ public class TicController {
 	}
 
 	public TicController() {
-		this(new TicModel(), new TicView()); // TODO: Consider passing these as arguments instead.;
+		this(new TicModel(), new TicView());
 	}
 	
 	public State getState(int x, int y) {
@@ -28,7 +28,11 @@ public class TicController {
 	}
 
 	public void start() {
-		System.out.println("Unused start method!");
-		// TODO: Add functionality here.
+		model.start();
+//		view.start();
+	}
+
+	public void refreshCell(int x, int y) {
+		view.refreshCell(x,y);
 	}
 }
