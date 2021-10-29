@@ -44,4 +44,12 @@ public class TicController {
 	public void refreshTotals() {
 		view.refreshTotals();
 	}
+	
+	public void refreshTurn() {
+		view.refreshTurn();
+	}
+
+	public State getTurn() {
+		return model.getTurnPlayer();
+	}
 }

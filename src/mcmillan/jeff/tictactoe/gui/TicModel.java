@@ -9,7 +9,7 @@ public class TicModel {
 	
 	private TicController controller;
 	private State[][] field;
-	private static State turn;
+	private State turn;
 	private int xWins = 0, oWins = 0, ties = 0;
 	
 	public TicModel(TicController ctrl) {
@@ -17,7 +17,6 @@ public class TicModel {
 	}
 	
 	public void start() {
-		turn = State.X;
 		newGame();
 	}
 	
@@ -100,12 +99,13 @@ public class TicModel {
 		field[x][y] = s;
 		controller.refreshCell(x,y);
 	}
-	public static void newTurn() {
+	public void newTurn() {
 		if (turn == State.X) {
 			turn = State.O;
 		} else {
 			turn = State.X;
 		}
+		controller.refreshTurn();
 	}
 	public int getXWins() {
 		return xWins;
