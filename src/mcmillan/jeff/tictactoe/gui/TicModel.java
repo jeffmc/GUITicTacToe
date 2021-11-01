@@ -14,6 +14,8 @@ public class TicModel {
 	
 	public TicModel(TicController ctrl) {
 		controller = ctrl;
+		field = new State[size][size];
+		turn = State.X;
 	}
 	
 	public void start() {
@@ -21,7 +23,7 @@ public class TicModel {
 	}
 	
 	
-	public boolean attemptMove(State player, int x, int y) {
+	public boolean attemptMove(State player, int x, int y) { // Attempt a move, return true if it was possible and made, or false if impossible.
 		if (player != State.X && player != State.O) throw new IllegalArgumentException("Invalid Player!");
 		if (x >= size || y >= size || x < 0 || y < 0) throw new IllegalArgumentException(x + ", " + y + " out of field bounds!");
 		if (field[x][y] != State.EMPTY) {
@@ -42,6 +44,7 @@ public class TicModel {
 		boolean gameComplete = status.snd;
 		State winner = status.fst;
 		if (gameComplete) {
+			// TODO: Show a win alert/dialog before newGame()!
 			newGame();
 			switch (winner) {
 			case X:
@@ -91,6 +94,7 @@ public class TicModel {
 			}
 		}
 	}
+	
 	public State getState(int x, int y) {
 		return field[x][y];
 	}
@@ -99,6 +103,7 @@ public class TicModel {
 		field[x][y] = s;
 		controller.refreshCell(x,y);
 	}
+	
 	public void newTurn() {
 		if (turn == State.X) {
 			turn = State.O;
@@ -107,6 +112,7 @@ public class TicModel {
 		}
 		controller.refreshTurn();
 	}
+	
 	public int getXWins() {
 		return xWins;
 	}

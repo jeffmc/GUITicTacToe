@@ -1,14 +1,16 @@
 package mcmillan.jeff.tictactoe.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 import mcmillan.jeff.tictactoe.State;
 
@@ -25,7 +27,10 @@ public class TicView {
 	private TicResultLabel xLabel, oLabel, tieLabel; 
 	
 	private JPanel miscPanel;
-	private JLabel turnLabel; 
+	private JLabel turnLabel;
+	private JTextField xNickTextField; 
+	private JTextField oNickTextField; 
+	private JButton changeNameBtn;
 	
 	public TicView(TicController ctrl) {
 		controller = ctrl;
@@ -35,8 +40,6 @@ public class TicView {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-		
-		// TODO: Add GUI for changing player names and showing current turn.
 		
 		boardPanel = new JPanel(new GridLayout(3, 3));
 		boardPanel.setPreferredSize(new Dimension(500, 500));
@@ -61,10 +64,17 @@ public class TicView {
 		
 		frame.getContentPane().add(winPanel);
 		
-		miscPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		miscPanel = new JPanel(new SpringLayout());
 		turnLabel = new JLabel();
+		xNickTextField = new JTextField("X", 10);
+		oNickTextField = new JTextField("O", 10);
+		changeNameBtn = new JButton("Change name");
 		refreshTurn();
 		miscPanel.add(turnLabel);
+		miscPanel.add(xNickTextField);
+		miscPanel.add(oNickTextField);
+		
+		SpringUtilities.makeCompactGrid();
 		
 		frame.getContentPane().add(miscPanel);
 		
@@ -85,7 +95,17 @@ public class TicView {
 	}
 
 	public String getPlayerName(State s) {
-		return s.getWinner(); // TODO: Replace with player nickname function
+		String nick;
+		switch (s) {
+		case X:
+			nick = controller.getXNick();
+			return nick!=null?nick:s.getWinner();
+		case O:
+			nick = controller.getONick();
+			return nick!=null?nick:s.getWinner();
+		default:
+			return s.getWinner();
+		}
 	}
 
 	public int getXWins() {

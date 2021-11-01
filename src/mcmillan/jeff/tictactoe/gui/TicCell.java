@@ -48,6 +48,14 @@ public class TicCell extends JButton {
 
 	public void setState(State s) {
 		state = s;
+		switch (s) {
+		case X:
+		case O:
+			this.setEnabled(false);
+		case EMPTY:
+		default:
+			this.setEnabled(true);
+		}
 		this.setText(getCharFromState(s)+"");
 	}	
 	

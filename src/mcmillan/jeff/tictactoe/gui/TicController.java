@@ -6,10 +6,14 @@ public class TicController {
 	
 	private TicModel model;
 	private TicView view;
+	
+	private String xNickname, oNickname; // TODO: Possibly move these fields into TicModel
 
 	public TicController() {
 		model = new TicModel(this);
 		view = new TicView(this);
+		xNickname = null;
+		oNickname = null;
 	}
 	
 	public State getState(int x, int y) {
@@ -51,5 +55,13 @@ public class TicController {
 
 	public State getTurn() {
 		return model.getTurnPlayer();
+	}
+	
+	public String getXNick() {
+		return xNickname;
+	}
+	
+	public String getONick() {
+		return oNickname;
 	}
 }
