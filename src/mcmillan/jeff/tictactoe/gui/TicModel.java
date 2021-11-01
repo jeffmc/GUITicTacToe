@@ -3,14 +3,17 @@ package mcmillan.jeff.tictactoe.gui;
 import mcmillan.jeff.tictactoe.Pair;
 import mcmillan.jeff.tictactoe.State;
 
+// TicModel manages the TicTacToe game state, it will trigger methods in the TicController to refresh TicView.
 public class TicModel {
 	
-	private static final int size = 3;
+	// Board size, this is NOT codebase-wide and should be removed in the future,
+	// or the rest of codebase should reference this value.
+	private static final int size = 3; // TODO: Remove or better implement this constant.
 	
-	private TicController controller;
-	private State[][] field;
-	private State turn;
-	private int xWins = 0, oWins = 0, ties = 0;
+	private TicController controller; // Reference to parent TicController.
+	private State[][] field; // The state of 3x3 game grid.
+	private State turn; // Current turn, X always start.
+	private int xWins = 0, oWins = 0, ties = 0; // Win totals
 	
 	public TicModel(TicController ctrl) {
 		controller = ctrl;
@@ -18,10 +21,9 @@ public class TicModel {
 		turn = State.X;
 	}
 	
-	public void start() {
+	public void start() { // Called in TicController after both TicModel and TicView constructor.
 		newGame();
 	}
-	
 	
 	public boolean attemptMove(State player, int x, int y) { // Attempt a move, return true if it was possible and made, or false if impossible.
 		if (player != State.X && player != State.O) throw new IllegalArgumentException("Invalid Player!");
@@ -39,12 +41,12 @@ public class TicModel {
 		return turn;
 	}
 	
-	private void moveExecuted() {
+	private void moveExecuted() { // A move has been successfully made in the field.
 		Pair<State, Boolean> status = gameStatus();
 		boolean gameComplete = status.snd;
 		State winner = status.fst;
 		if (gameComplete) {
-			// TODO: Show a win alert/dialog before newGame()!
+			controller.showFinishedAlert(winner);
 			newGame();
 			switch (winner) {
 			case X:
@@ -64,8 +66,8 @@ public class TicModel {
 		}
 	}
 	
-
-	public Pair<State, Boolean> gameStatus() { // return type <gameComplete, winner>
+	// return type <gameComplete, winner>
+	public Pair<State, Boolean> gameStatus() { // Checks if the game is complete, returns winner or tie game.
 		final State[] players = {State.X, State.O};
 		for (State p : players) {
 			if (field[1][1] == p) { // Diagonal check
@@ -99,12 +101,12 @@ public class TicModel {
 		return field[x][y];
 	}
 
-	public void setState(State s, int x, int y) {
+	public void setState(State s, int x, int y) { // Set state of cell and refresh it in the controller.
 		field[x][y] = s;
 		controller.refreshCell(x,y);
 	}
 	
-	public void newTurn() {
+	public void newTurn() { // Triggers next turn, refreshes turn in controller
 		if (turn == State.X) {
 			turn = State.O;
 		} else {

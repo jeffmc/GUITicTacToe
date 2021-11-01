@@ -1,5 +1,6 @@
 package mcmillan.jeff.tictactoe;
 
+// Player state used all across TicTacToe application.
 public enum State {
 	EMPTY("empty"),X("X"),O("O");
     private String name;

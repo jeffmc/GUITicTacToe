@@ -3,17 +3,22 @@ package mcmillan.jeff.tictactoe.gui;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import layout.SpringUtilities;
 import mcmillan.jeff.tictactoe.State;
 
+// TicView manages all elements of the GUI, it's methods are meant to be called by TicController.
 public class TicView {
 
 	private TicController controller;
@@ -66,15 +71,25 @@ public class TicView {
 		
 		miscPanel = new JPanel(new SpringLayout());
 		turnLabel = new JLabel();
-		xNickTextField = new JTextField("X", 10);
-		oNickTextField = new JTextField("O", 10);
 		changeNameBtn = new JButton("Change name");
+		
+		changeNameBtn.addActionListener(new ChangeNameListener(this));
+		
+		JLabel xNickLabel = new JLabel("X Nickname:");
+		xNickTextField = new JTextField("X", 10);
+		xNickLabel.setLabelFor(xNickTextField);
+		JLabel oNickLabel = new JLabel("O Nickname:");
+		oNickTextField = new JTextField("O", 10);
+		oNickLabel.setLabelFor(oNickTextField);
 		refreshTurn();
 		miscPanel.add(turnLabel);
+		miscPanel.add(changeNameBtn);
+		miscPanel.add(xNickLabel);
 		miscPanel.add(xNickTextField);
+		miscPanel.add(oNickLabel);
 		miscPanel.add(oNickTextField);
 		
-		SpringUtilities.makeCompactGrid();
+		SpringUtilities.makeCompactGrid(miscPanel, 3, 2, 5, 5, 5, 5);
 		
 		frame.getContentPane().add(miscPanel);
 		
@@ -90,19 +105,24 @@ public class TicView {
 		return controller.getState(x, y);
 	}
 
+	public void refreshField() {
+		for (int y=0;y<3;y++) {
+			for (int x=0;x<3;x++) {
+				cells[x][y].setState(controller.getState(x, y));
+			}
+		}
+	}
+	
 	public void refreshCell(int x, int y) {
 		cells[x][y].setState(controller.getState(x, y));
 	}
 
 	public String getPlayerName(State s) {
-		String nick;
 		switch (s) {
 		case X:
-			nick = controller.getXNick();
-			return nick!=null?nick:s.getWinner();
+			return controller.getXNick();
 		case O:
-			nick = controller.getONick();
-			return nick!=null?nick:s.getWinner();
+			return controller.getONick();
 		default:
 			return s.getWinner();
 		}
@@ -121,9 +141,9 @@ public class TicView {
 	}
 
 	public void refreshTotals() {
-		xLabel.refreshLabel();
-		oLabel.refreshLabel();
-		tieLabel.refreshLabel();
+		xLabel.refresh();
+		oLabel.refresh();
+		tieLabel.refresh();
 	}
 	
 	public void refreshTurn() {
@@ -131,4 +151,40 @@ public class TicView {
 		turnLabel.setText(getPlayerName(p) + "'s turn");
 	}
 	
+	class ChangeNameListener implements ActionListener {
+		private TicView view;
+		public ChangeNameListener(TicView v) {
+			view = v;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			view.refreshNames();
+		}
+		
+	}
+
+	public void refreshNames() {
+		controller.setXNick(xNickTextField.getText());
+		controller.setONick(oNickTextField.getText());
+		refreshTurn();
+		refreshTotals();
+		refreshField();
+	}
+
+	public String getNickname(State s) {
+		switch (s) {
+		case X:
+			return controller.getXNick();
+		case O:
+			return controller.getONick();
+		case EMPTY:
+		default:
+			return "";
+				
+		}
+	}
+	
+	public void showAlert(String msg) {
+		JOptionPane.showMessageDialog(frame, msg);
+	}
 }

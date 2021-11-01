@@ -4,6 +4,7 @@ package mcmillan.jeff.tictactoe.gui;
 // October 29th, 2021
 // An implementation of the TicTacToe game with a graphical user interface.
 
+// Main only launches TicController
 public class Main {
 	
 	public static TicController ctrl;

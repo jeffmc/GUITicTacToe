@@ -4,6 +4,7 @@ import javax.swing.JLabel;
 
 import mcmillan.jeff.tictactoe.State;
 
+// TicResultLabel GUI text element used for showing win totals.
 @SuppressWarnings("serial")
 public class TicResultLabel extends JLabel {
 	
@@ -16,14 +17,15 @@ public class TicResultLabel extends JLabel {
 		view = v;
 		player = State.EMPTY;
 		prefix = TicResultLabel.makePrefix(custom);
-		refreshLabel();
+		refresh();
 	}
 	public TicResultLabel(State p, TicView v) {
 		this(v.getPlayerName(p), v);
 		player = p;
 	}
 	
-	public void refreshLabel() {
+	public void refresh() { // GUI refresh
+		if (player==State.X||player==State.O) prefix = makePrefix(view.getPlayerName(player));
 		int total;
 		switch(player) {
 		case X:
@@ -41,12 +43,6 @@ public class TicResultLabel extends JLabel {
 		}
 		this.setText(prefix + total);
 	}
-	
-	public void refreshName() {
-		prefix = makePrefix(view.getPlayerName(player));
-		refreshLabel();
-	}
-	
 
 	private static String makePrefix(String custom) {
 		return custom + ": ";
