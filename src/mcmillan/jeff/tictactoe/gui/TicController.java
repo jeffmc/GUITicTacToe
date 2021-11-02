@@ -64,12 +64,12 @@ public class TicController {
 		return oNickname!=""?oNickname:State.O.getWinner();
 	}
 
-	public void setXNick(String nick) { // Trims whitespace and sets nickname (does not refresh GUI)
-		xNickname = nick.trim();
+	public void setXNick(String nick) { // Sets nickname (does not refresh GUI)
+		xNickname = nick.length()>0?nick:State.X.getWinner();
 	}
 	
-	public void setONick(String nick) { // Trims whitespace and sets nickname (does not refresh GUI)
-		oNickname = nick.trim();
+	public void setONick(String nick) { // Sets nickname (does not refresh GUI)
+		oNickname = nick.length()>0?nick:State.O.getWinner();
 	}
 	
 	public void showFinishedAlert(State winner) { // Show dialog alerting players of the completed game.

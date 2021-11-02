@@ -164,8 +164,8 @@ public class TicView {
 	}
 
 	public void refreshNames() {
-		controller.setXNick(xNickTextField.getText());
-		controller.setONick(oNickTextField.getText());
+		controller.setXNick(xNickTextField.getText().trim());
+		controller.setONick(oNickTextField.getText().trim());
 		refreshTurn();
 		refreshTotals();
 		refreshField();
